@@ -25,14 +25,6 @@
 
   <g fill="none" stroke-linecap="round" stroke-linejoin="round">
 
-    <!-- Tira de película -->
-    <g stroke="#00A3FF" stroke-opacity=".16">
-      <path d="M-40 760 C 300 640, 520 900, 860 800 S 1400 640, 1660 720" stroke-width="54"/>
-      <path d="M-40 760 C 300 640, 520 900, 860 800 S 1400 640, 1660 720" stroke="#04044A" stroke-opacity="1" stroke-width="40"/>
-      <path d="M-40 760 C 300 640, 520 900, 860 800 S 1400 640, 1660 720" stroke-width="40" stroke-dasharray="2 60" stroke-opacity=".22"/>
-      <path d="M-40 742 C 300 622, 520 882, 860 782 S 1400 622, 1660 702" stroke-width="5" stroke-dasharray="8 12"/>
-      <path d="M-40 778 C 300 658, 520 918, 860 818 S 1400 658, 1660 738" stroke-width="5" stroke-dasharray="8 12"/>
-    </g>
 
     <!-- Dron grande -->
     <g transform="translate(1190 250) rotate(-6)" stroke="#00E7FF" stroke-opacity=".42" stroke-width="3">
