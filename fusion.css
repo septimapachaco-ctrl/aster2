@@ -1,0 +1,216 @@
+/* ==========================================================
+   Agencia Aster — Estilo fusión
+   Une el estilo claro original (blanco, limpio) con el tema
+   "Producción" (fondo fijo con dron y equipo de grabación,
+   recuadros de vidrio y luces LED).
+
+   Cómo funciona: el fondo de producción queda fijo detrás de
+   toda la página. Las secciones claras son blancas y lo tapan;
+   las secciones con la clase .is-dark son transparentes y lo
+   dejan ver como "ventanas" mientras se hace scroll.
+   Se carga después de styles.css.
+   ========================================================== */
+
+@property --led { syntax: "<angle>"; inherits: false; initial-value: 0deg; }
+
+:root {
+  /* LED en secciones claras */
+  --led-1: rgba(0, 163, 255, .35);
+  --led-2: var(--sky);
+  --led-3: var(--blue);
+  --led-shadow: rgba(0, 163, 255, .55);
+  --spot: rgba(0, 163, 255, .10);
+  --glow: 0 0 6px var(--cyan), 0 0 18px rgba(0, 231, 255, .55);
+}
+
+/* ---------- Fondo fijo de producción ---------- */
+.scene {
+  position: fixed; inset: 0; z-index: -2; pointer-events: none;
+  background: var(--night) url("assets/bg-produccion.svg") center / cover no-repeat;
+}
+.scene::after {
+  content: ""; position: absolute; inset: 0;
+  background: radial-gradient(120% 80% at 50% 40%, rgba(4,4,74,.1), rgba(4,4,74,.5));
+}
+.scene__orb {
+  position: absolute; width: 46vmax; height: 46vmax; border-radius: 50%; filter: blur(60px); opacity: .35;
+  background: radial-gradient(circle, var(--sky), transparent 65%);
+  animation: orb 22s ease-in-out infinite alternate;
+}
+.scene__orb--1 { left: -14vmax; top: -10vmax; }
+.scene__orb--2 { right: -12vmax; bottom: -16vmax; background: radial-gradient(circle, var(--cyan), transparent 65%); opacity: .2; animation-duration: 28s; animation-direction: alternate-reverse; }
+@keyframes orb { to { transform: translate(18vw, 22vh) scale(1.15); } }
+
+/* ---------- Secciones claras (tapan el fondo) ---------- */
+.section, .trust, .post-body { position: relative; background: var(--white); }
+.process, .team { background: linear-gradient(180deg, var(--white), var(--surface)); }
+.testimonials { background: var(--surface); }
+.blog-teaser { background: var(--surface); }
+
+/* ---------- Secciones oscuras (ventanas al fondo fijo) ---------- */
+.is-dark {
+  --ink: #FFFFFF;
+  --muted: rgba(255, 255, 255, .74);
+  --line: rgba(255, 255, 255, .14);
+  --surface: rgba(255, 255, 255, .06);
+  --led-1: rgba(0, 163, 255, .6);
+  --led-2: var(--cyan);
+  --led-3: #FFFFFF;
+  --led-shadow: var(--cyan);
+  --spot: rgba(0, 231, 255, .16);
+  position: relative;
+  color: var(--ink);
+  background: transparent !important;
+  box-shadow: inset 0 18px 30px -18px rgba(0, 0, 0, .45), inset 0 -18px 30px -18px rgba(0, 0, 0, .45);
+}
+.is-dark .eyebrow { color: var(--cyan); }
+.is-dark .script { color: var(--cyan); animation: neon 4s ease-in-out infinite; }
+@keyframes neon { 0%, 100% { text-shadow: 0 0 10px rgba(0,231,255,.45); } 50% { text-shadow: 0 0 22px rgba(0,231,255,.9), 0 0 40px rgba(0,163,255,.5); } }
+.ecosystem::before { opacity: .6; }
+.hero .hero__bg { opacity: .55; }
+.cta .hero__bg, .page-hero .hero__bg { opacity: .7; }
+
+/* Recuadros de vidrio en secciones oscuras */
+.is-dark :is(.pain, .service, .case, .quote, .post-card, details, .post-cta, .flow li, .member__photo) {
+  background-color: rgba(10, 18, 110, .28);
+  border: 1px solid var(--line);
+  backdrop-filter: blur(14px) saturate(140%);
+  -webkit-backdrop-filter: blur(14px) saturate(140%);
+}
+.is-dark :is(.service, .post-card, .quote):hover { background-color: rgba(20, 40, 160, .35); border-color: rgba(0, 231, 255, .4); box-shadow: 0 0 0 1px rgba(0,231,255,.15), 0 24px 60px -20px rgba(0, 163, 255, .55); }
+.is-dark :is(.service__offer, .case__facts dt) { color: var(--cyan); }
+.is-dark .tags li { background: rgba(0, 231, 255, .12); color: var(--white); border: 1px solid rgba(0,231,255,.25); }
+.is-dark .faq details[open], .faq.is-dark details[open] { border-color: rgba(0, 231, 255, .55); }
+.faq.is-dark summary::after { background: rgba(255,255,255,.1); color: var(--white); }
+.faq.is-dark details[open] summary::after { color: var(--night); background: var(--cyan); }
+.is-dark .ph--a { background: linear-gradient(150deg, rgba(1,9,120,.85), rgba(4,4,74,.6)); }
+.is-dark .ph--b { background: linear-gradient(150deg, rgba(0,163,255,.75), rgba(1,9,120,.6)); }
+.is-dark .ph--c { background: linear-gradient(150deg, rgba(0,231,255,.7), rgba(0,163,255,.5)); }
+.is-dark .btn--primary { background: linear-gradient(90deg, var(--sky), #1268FF); box-shadow: 0 0 0 1px rgba(0,231,255,.35), 0 10px 30px -10px rgba(0,163,255,.8); }
+.is-dark .btn--primary:hover { background: var(--cyan); color: var(--night); }
+
+/* Footer oscuro translúcido */
+.footer { position: relative; background: rgba(4, 4, 74, .86); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
+
+/* ---------- Pasos del proceso (sección clara con LED) ---------- */
+.step__n { box-shadow: 0 0 0 4px rgba(0, 163, 255, .12), 0 0 14px rgba(0, 163, 255, .35); }
+
+/* ---------- LED: borde de luz que recorre cada recuadro ---------- */
+:is(.pain, .service, .case, .quote, .post-card, .faq details, .post-cta) { position: relative; }
+:is(.pain, .service, .case, .post-card, .faq details, .post-cta)::before, .quote::after {
+  content: ""; position: absolute; inset: -1px; border-radius: inherit; padding: 1.5px; pointer-events: none; z-index: 1;
+  background: conic-gradient(from var(--led), transparent 0 72%, var(--led-1) 82%, var(--led-2) 90%, var(--led-3) 93%, transparent 96%);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor; mask-composite: exclude;
+  filter: drop-shadow(0 0 4px var(--led-shadow));
+  animation: led-spin 6s linear infinite;
+}
+:is(.pain, .service, .post-card):nth-child(2n)::before { animation-delay: -2s; }
+:is(.pain, .service, .post-card):nth-child(3n)::before { animation-delay: -4s; }
+.faq details:nth-child(2n)::before { animation-delay: -3s; }
+@keyframes led-spin { to { --led: 360deg; } }
+
+/* Luz que sigue al cursor dentro de los recuadros */
+:is(.pain, .service, .post-card, .quote) { background-image: radial-gradient(260px circle at var(--mx, -300px) var(--my, -300px), var(--spot), transparent 60%); }
+
+/* ---------- LED: línea de luz que cruza cada sección ---------- */
+:is(.section, .trust, .cta)::after {
+  content: ""; position: absolute; left: 0; right: 0; top: 0; height: 1px; pointer-events: none;
+  background:
+    linear-gradient(90deg, transparent, var(--led-2), var(--led-3), var(--led-2), transparent) -30% 0 / 30% 100% no-repeat,
+    linear-gradient(90deg, transparent, var(--led-1), transparent);
+  box-shadow: 0 0 12px var(--led-1);
+  animation: led-sweep 7s linear infinite;
+}
+.section:nth-of-type(2n)::after { animation-direction: reverse; animation-duration: 9s; }
+@keyframes led-sweep { from { background-position: -30% 0, 0 0; } to { background-position: 130% 0, 0 0; } }
+
+/* ---------- LED: rieles laterales y barra de progreso ---------- */
+.led-rail {
+  position: fixed; top: 0; bottom: 0; width: 2px; z-index: 40; pointer-events: none;
+  background: linear-gradient(180deg, transparent, rgba(0,163,255,.3) 15%, rgba(0,163,255,.3) 85%, transparent);
+}
+.led-rail--l { left: 10px; }
+.led-rail--r { right: 10px; }
+.led-rail--r::before, .led-rail--r::after {
+  content: ""; position: absolute; left: -1px; width: 4px; height: 120px; border-radius: 4px;
+  background: linear-gradient(180deg, transparent, var(--sky), var(--cyan));
+  box-shadow: var(--glow); animation: rail-run 5s linear infinite;
+}
+.led-rail--r::after { animation-delay: -2.5s; }
+@keyframes rail-run { from { top: -140px; } to { top: 100%; } }
+.led-rail__runner {
+  position: absolute; left: -4px; width: 10px; height: 10px; border-radius: 50%;
+  top: calc(var(--p, 0) * (100% - 10px));
+  background: #FFFFFF; box-shadow: 0 0 6px var(--cyan), 0 0 14px var(--sky), 0 0 30px var(--sky);
+}
+.led-rail__runner::before {
+  content: ""; position: absolute; left: 4px; bottom: 8px; width: 2px; height: 90px;
+  background: linear-gradient(0deg, var(--sky), transparent);
+}
+.scroll-led {
+  position: fixed; left: 0; top: 0; height: 3px; width: 100%; z-index: 70; pointer-events: none;
+  transform-origin: 0 50%; transform: scaleX(var(--p, 0));
+  background: linear-gradient(90deg, var(--blue), var(--sky), var(--cyan));
+  box-shadow: 0 0 8px var(--cyan), 0 0 20px rgba(0,231,255,.6);
+}
+
+/* ---------- Hero: dron animado ---------- */
+.hero { overflow: hidden; }
+.hero-drone {
+  position: absolute; right: max(2vw, calc((100vw - 1200px) / 2 - 40px)); top: 22%;
+  width: min(31vw, 440px); z-index: 0; pointer-events: none;
+  animation: drone-float 6s ease-in-out infinite;
+  filter: drop-shadow(0 0 18px rgba(0, 231, 255, .45));
+}
+.hero-drone .prop { transform-box: fill-box; transform-origin: center; animation: prop-spin .18s linear infinite; }
+.hero-drone .prop:nth-of-type(2n) { animation-direction: reverse; }
+.hero-drone .beam { transform-box: fill-box; transform-origin: 50% 0; animation: beam 3s ease-in-out infinite; }
+.hero-drone .led-dot { animation: blink 1.2s steps(2, jump-none) infinite; }
+.hero-drone .led-dot:nth-of-type(2n) { animation-delay: .6s; }
+@keyframes drone-float { 0%, 100% { transform: translate(0, 0) rotate(-3deg); } 50% { transform: translate(-18px, -26px) rotate(2deg); } }
+@keyframes prop-spin { 0% { transform: scaleX(1); } 50% { transform: scaleX(.15); } 100% { transform: scaleX(1); } }
+@keyframes beam { 0%, 100% { opacity: .25; transform: scaleY(.9); } 50% { opacity: .55; transform: scaleY(1.05); } }
+@keyframes blink { 0% { opacity: 1; } 100% { opacity: .15; } }
+.hero__inner { position: relative; z-index: 1; }
+@media (min-width: 901px) { .hero h1 { max-width: 13ch; font-size: clamp(2.8rem, 5.6vw, 5.3rem); } }
+
+.rec {
+  display: inline-flex; align-items: center; gap: 8px; margin-left: 14px; padding: 4px 10px; border-radius: 999px;
+  font-family: ui-monospace, Menlo, Consolas, monospace; font-size: .72rem; letter-spacing: .12em; color: var(--white);
+  border: 1px solid rgba(255,255,255,.25); background: rgba(4,4,74,.4); vertical-align: middle;
+}
+.rec::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: #FF3B5C; box-shadow: 0 0 8px #FF3B5C; animation: blink 1s steps(2, jump-none) infinite; }
+
+/* ---------- Animaciones ---------- */
+.hero__inner > *, .page-hero .container > * { animation: rise .9s cubic-bezier(.2,.7,.2,1) both; }
+.hero__inner > :nth-child(2), .page-hero .container > :nth-child(2) { animation-delay: .12s; }
+.hero__inner > :nth-child(3), .page-hero .container > :nth-child(3) { animation-delay: .24s; }
+.hero__inner > :nth-child(4), .page-hero .container > :nth-child(4) { animation-delay: .36s; }
+.hero__inner > :nth-child(5) { animation-delay: .48s; }
+@keyframes rise { from { opacity: 0; transform: translateY(28px); filter: blur(6px); } to { opacity: 1; transform: none; filter: none; } }
+
+.reveal { transform: translateY(34px) scale(.97); }
+.reveal.is-visible { transform: none; }
+
+.btn--light, .btn--primary { position: relative; overflow: hidden; }
+.btn--light::after, .btn--primary::after {
+  content: ""; position: absolute; top: 0; bottom: 0; width: 40%; left: -60%;
+  background: linear-gradient(100deg, transparent, rgba(255,255,255,.6), transparent);
+  transform: skewX(-20deg); animation: shine 4.5s ease-in-out infinite;
+}
+@keyframes shine { 0%, 60% { left: -60%; } 100% { left: 130%; } }
+
+.wa-float { animation: wa-pulse 2.4s ease-out infinite; }
+@keyframes wa-pulse { 0% { box-shadow: 0 0 0 0 rgba(0,231,255,.55), 0 12px 30px -8px rgba(0,163,255,.8); } 100% { box-shadow: 0 0 0 22px rgba(0,231,255,0), 0 12px 30px -8px rgba(0,163,255,.8); } }
+
+@media (max-width: 900px) {
+  .hero-drone { width: 70vw; right: -16vw; top: auto; bottom: 6%; opacity: .35; }
+  .led-rail { display: none; }
+}
+@media (max-width: 600px) { .rec { display: none; } }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; }
+  .scroll-led, .led-rail__runner { display: none; }
+}
